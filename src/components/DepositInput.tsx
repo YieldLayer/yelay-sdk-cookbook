@@ -60,8 +60,8 @@ const DepositInput: React.FC<DepositInputProps> = ({smartVaultAddress, token}) =
                 throw new Error('No account found');
             }
             const depositBag: DepositBagStruct = {
-                smartVault: token.address,
-                assets: [amount],
+                smartVault: smartVaultAddress,
+                assets: [parseUnits(amount, token.decimals)],
                 receiver: account,
                 referral: ethers.constants.AddressZero,
                 doFlush: false,

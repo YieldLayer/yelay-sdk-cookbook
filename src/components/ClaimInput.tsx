@@ -63,7 +63,7 @@ const ClaimInput: React.FC<ClaimInputProps> = ({smartVaultAddress, token}) => {
 
     return (
         <Box display="flex" flexDirection="column" gap={2}>
-            <Typography variant="caption">Available amount to claim: {hasClaimable ? 'yes' : 'no'}</Typography>
+            <Typography variant="caption">Available to claim: {hasClaimable ? 'yes' : 'no'}</Typography>
             <Box display='flex' flexDirection='column' gap={2}>
                 {loading ? (
                     <Button fullWidth disabled>

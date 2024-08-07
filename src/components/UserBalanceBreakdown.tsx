@@ -70,9 +70,9 @@ const UserBalanceBreakdown: React.FC<UserBalanceBreakdownProps> = ({smartVaultAd
             <Typography variant='h5'>Pending withdrawal</Typography>
             <Typography variant='body1'>{balanceBreakdown.pendingWithdrawal}</Typography>
             <Divider/>
-            <Typography variant='h5'>Claimable claimableWNFTs</Typography>
+            <Typography variant='h5'>Claimable WNFTs</Typography>
             <Typography variant='body1'>{balanceBreakdown.claimableWNFTs?.map((wNFT, index) => (
-                <Typography key={index} variant='body1'>{wNFT.nftId.toString()}</Typography>
+                <Typography key={index} variant='body1'>{`${wNFT.nftId.toString().slice(0, 3)}...${wNFT.nftId.toString().slice(-3)}`}</Typography>
             ))}
             </Typography>
             <Divider/>

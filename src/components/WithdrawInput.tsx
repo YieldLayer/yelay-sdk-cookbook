@@ -126,7 +126,7 @@ const WithdrawInput: React.FC<WithdrawInputProps> = ({smartVaultAddress, token})
                         <CircularProgress/>
                     </Button>
                 ) : (
-                    <Button fullWidth disabled={!account || !!amount} variant="contained" color="primary"
+                    <Button fullWidth disabled={!account || !!amount || !withdrawable} variant="contained" color="primary"
                             onClick={handleWithdrawMax}>
                         Withdraw All
                     </Button>

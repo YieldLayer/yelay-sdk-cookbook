@@ -1,15 +1,10 @@
 "use client";
-import { createContext, useContext, ReactNode } from 'react';
+
+import {createContext, useContext, ReactNode, useMemo} from 'react';
 import { SDKConfig, SpoolSdk } from '@spool.fi/spool-v2-sdk';
-import { StaticJsonRpcProvider } from '@ethersproject/providers';
-import { Wallet } from 'ethers';
+import {JsonRpcProvider} from '@ethersproject/providers';
+import {useWeb3Provider} from "@/context/web3Context";
 
-const pk = process.env.NEXT_PUBLIC_PK || '';
-const rpc = new StaticJsonRpcProvider(
-    process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL,
-);
-
-const signer = new Wallet(pk, rpc);
 
 const contractAddresses = {
   11155111: {
@@ -31,8 +26,6 @@ const config = new SDKConfig(
     contractAddresses,
 );
 
-const spoolSDK = new SpoolSdk(config, signer);
-
 const SpoolSDKContext = createContext<SpoolSdk | null>(null);
 
 export const useSpoolSDK = () => {
@@ -48,6 +41,17 @@ type SpoolSDKProviderProps = {
 };
 
 export const SpoolSDKProvider = ({ children }: SpoolSDKProviderProps) => {
+
+  const { account, provider } = useWeb3Provider();
+  const tempProvider = new JsonRpcProvider(process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL || '');
+
+  const spoolSDK = useMemo(() => {
+    if (account && provider) {
+      return new SpoolSdk(config, provider.getSigner());
+    }
+    return new SpoolSdk(config, tempProvider);
+  }, [provider, account]);
+
   return (
     <SpoolSDKContext.Provider value={spoolSDK}>
       {children}
