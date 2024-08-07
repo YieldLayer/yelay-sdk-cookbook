@@ -34,12 +34,10 @@ const UserBalanceBreakdown: React.FC<UserBalanceBreakdownProps> = ({smartVaultAd
     useEffect(() => {
         const fetchBalanceBreakdown = async () => {
             if (account) {
-                console.log("account, smartVaultAddress", account, smartVaultAddress);
                 const balanceBreakdown = await SpoolSDK.getUserBalanceBreakdown({
                     vaultAddress: smartVaultAddress,
                     userAddress: account.toLowerCase()
                 });
-                console.log(balanceBreakdown);
                 setBalanceBreakdown(balanceBreakdown);
             }
         }
@@ -49,7 +47,7 @@ const UserBalanceBreakdown: React.FC<UserBalanceBreakdownProps> = ({smartVaultAd
         <>
             <Typography variant='h5'>Pending assets</Typography>
             {Object.entries(balanceBreakdown.pendingAssets).map(([key, value]) => (
-                <Typography variant='body1'>{`${key}: ${value}`}</Typography>
+                <Typography key={key} variant='body1'>{`${key}: ${value}`}</Typography>
             ))}
             <Typography variant='h5'>Pending dNFTs</Typography>
             <Box display='flex' gap={2}>
@@ -60,7 +58,7 @@ const UserBalanceBreakdown: React.FC<UserBalanceBreakdownProps> = ({smartVaultAd
             <Divider/>
             <Typography variant='h5'>Withdrawable assets</Typography>
             {Object.entries(balanceBreakdown.withdrawableAssets).map(([key, value]) => (
-                <Typography variant='body1'>{`${key}: ${value}`}</Typography>
+                <Typography key={key} variant='body1'>{`${key}: ${value}`}</Typography>
             ))}
             <Typography variant='h5'>Withdrawable dNFTs</Typography>
             <Box display='flex' gap={2}>
@@ -81,7 +79,7 @@ const UserBalanceBreakdown: React.FC<UserBalanceBreakdownProps> = ({smartVaultAd
             <Typography variant='h5'>Withdrawn assets</Typography>
             <Box display='flex' gap={2}>
                 {Object.entries(balanceBreakdown.withdrawnAssets).map(([key, value]) => (
-                    <Typography variant='body1'>{`${key}: ${value}`}</Typography>
+                    <Typography key={key} variant='body1'>{`${key}: ${value}`}</Typography>
                 ))}
             </Box>
         </>
