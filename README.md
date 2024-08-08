@@ -6,8 +6,8 @@ Welcome to the Spool V2 SDK Cookbook! This cookbook is a guide to using the Spoo
 
 The cookbook currently contains recipes for the following use cases:
 
-- Depositing
-- Withdrawing
+- Depositing,
+- Withdrawing,
 - More coming soon.
-- 
+
 For detailed information, setup instructions, and usage guidelines, please visit our [Wiki Page](https://github.com/solidant/spool-v2-sdk-cookbook/wiki).
