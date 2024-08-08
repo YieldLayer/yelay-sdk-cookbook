@@ -54,12 +54,13 @@ const DepositInput: React.FC<ApproveInputProps> = ({smartVaultAddress, token}) =
     return (
         <Box display="flex" flexDirection="column" gap={2}>
             <TextField
-                label="Approve Amount (in USD)"
+                label="Approve Amount"
                 variant="outlined"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 type="number"
             />
+            <Typography variant="caption">Approved amount to deposit into this vault: {allowance?.toString()}</Typography>
             {loading ? (
                 <Button disabled>
                     <CircularProgress />
@@ -69,7 +70,6 @@ const DepositInput: React.FC<ApproveInputProps> = ({smartVaultAddress, token}) =
                 Approve
             </Button>
             )}
-            <Typography variant="caption">Approved amount to deposit into this vault: {allowance?.toString()}</Typography>
         </Box>
     );
 };

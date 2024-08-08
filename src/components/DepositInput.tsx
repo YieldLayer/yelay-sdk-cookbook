@@ -83,6 +83,7 @@ const DepositInput: React.FC<DepositInputProps> = ({smartVaultAddress, token}) =
                 onChange={(e) => setAmount(e.target.value)}
                 type="number"
             />
+            <Typography variant="caption">Approved amount to deposit into this vault: {allowance?.toString()}</Typography>
             {loading ? (
                 <Button disabled>
                     <CircularProgress />
@@ -92,7 +93,6 @@ const DepositInput: React.FC<DepositInputProps> = ({smartVaultAddress, token}) =
                 Deposit
             </Button>
             )}
-            <Typography variant="caption">Approved amount to deposit into this vault: {allowance?.toString()}</Typography>
         </Box>
     );
 };

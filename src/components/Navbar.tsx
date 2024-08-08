@@ -18,7 +18,7 @@ const Navbar = () => {
             <AppBar position="fixed">
                 <Toolbar>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            DeFi App
+                            Spool Template
                         </Typography>
                     <Box display='flex' gap={1}>
                         {navItems.map((item) => (

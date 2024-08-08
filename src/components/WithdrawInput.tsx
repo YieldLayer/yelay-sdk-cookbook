@@ -102,6 +102,7 @@ const WithdrawInput: React.FC<WithdrawInputProps> = ({smartVaultAddress, token})
                 onChange={(e) => setAmount(e.target.value)}
                 type="number"
             />
+            <Typography variant="caption">Available amount to withdraw: {withdrawable}</Typography>
             <Box display='flex'>
                 <Typography variant='body1' alignSelf='center'>
                     Fast Withdraw
@@ -132,7 +133,6 @@ const WithdrawInput: React.FC<WithdrawInputProps> = ({smartVaultAddress, token})
                     </Button>
                 )}
             </Box>
-            <Typography variant="caption">Available amount to withdraw: {withdrawable}</Typography>
         </Box>
     );
 };
