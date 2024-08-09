@@ -12,7 +12,7 @@ interface ApproveInputProps {
     token: TokenInfo;
 }
 
-const DepositInput: React.FC<ApproveInputProps> = ({smartVaultAddress, token}) => {
+const ApproveInput: React.FC<ApproveInputProps> = ({smartVaultAddress, token}) => {
 
     const {account, checkAllowance, approve} = useWeb3Provider();
 
@@ -74,4 +74,4 @@ const DepositInput: React.FC<ApproveInputProps> = ({smartVaultAddress, token}) =
     );
 };
 
-export default DepositInput;
+export default ApproveInput;
