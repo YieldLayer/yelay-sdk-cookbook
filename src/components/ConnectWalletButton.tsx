@@ -10,7 +10,7 @@ const connectWalletButton = () => {
         <>
             {account ? (
                 <Box display='flex' gap={2}>
-                    <Typography variant='caption' alignSelf='center'>{account.slice(0, 3)}...${account.slice(-3)}</Typography>
+                    <Typography variant='caption' alignSelf='center'>{account.slice(0, 5)}...${account.slice(-3)}</Typography>
                     <Button variant='contained' color='secondary' sx={{color: '#fff'}} onClick={disconnectWallet}>Disconnect</Button>
                 </Box>
             ) : (

@@ -13,6 +13,10 @@ const Navbar = () => {
             name: 'Smart Vaults',
             link: '/'
         },
+        {
+            name: 'Rewards',
+            link: '/rewards'
+        },
     ];
     return (
             <AppBar position="fixed">

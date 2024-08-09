@@ -15,7 +15,7 @@
     "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.16.4",
     "@mui/material-nextjs": "^5.16.4",
-    "@spool.fi/spool-v2-sdk": "^1.0.25",
+    "@spool.fi/spool-v2-sdk": "^1.0.27",
     "ethers": "^5.7.2",
     "next": "14.2.5",
     "react": "^18",

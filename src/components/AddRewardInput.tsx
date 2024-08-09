@@ -1,50 +1,66 @@
 "use client";
 
-import React, {useEffect, useState} from 'react';
-import {TextField, Button, Grid, CircularProgress} from '@mui/material';
+import React, {useState} from 'react';
+import {TextField, Button, Grid, CircularProgress, FormControl, InputLabel, Select, MenuItem} from '@mui/material';
 import {useSpoolSDK} from "@/context/SpoolSDKContext";
 import Box from "@mui/material/Box";
+import {UserVaults} from "@spool.fi/spool-v2-sdk";
+import {parseUnits} from "ethers/lib/utils";
 
 interface AddRewardInputProps {
-    smarVaultAddress: string;
+    ownedSmartVaults: UserVaults[];
 }
 
-const AddRewardInput: React.FC<AddRewardInputProps> = ({smarVaultAddress}) => {
+const AddRewardInput: React.FC<AddRewardInputProps> = ({ownedSmartVaults}) => {
 
     const SpoolSDK = useSpoolSDK();
 
-    const [tokenAddress, setTokenAddress] = useState<string>('');
+    const [tokenName, setTokenName] = useState<string>('');
     const [endTimestamp, setEndTimestamp] = useState<string>('');
     const [amount, setAmount] = useState<string>('');
     const [loading, setLoading] = useState(false);
-
-    /*useEffect(() => {
-        const isOwner = async () => {
-            const vaultOwner = await SpoolSDK.views.vaultInfo.getVaultOwner({vaultAddress:smarVaultAddress});
-            const owner = vaultInfo.
-            console.log('isOwner:', isOwner);
-        }
-    }, []);*/
+    const [selectedVault, setSelectedVault] = useState<string>('');
 
     const handleAddReward = async () => {
-        try {
-            setLoading(true);
-            const endTimeInSeconds = Math.floor(new Date(endTimestamp).getTime() / 1000);
-            await SpoolSDK.mutations.rewards.addRewardToken(smarVaultAddress, tokenAddress, endTimeInSeconds, amount)
-        } catch (error) {
-            console.error('Error adding reward:', error);
-        } finally {
-            setLoading(false);
+        const selected = ownedSmartVaults.find(vault => vault.smartVault.name === selectedVault)?.smartVault;
+        const selectedAddress = selected?.address;
+        if (selectedAddress) {
+            try {
+                console.log('Adding reward...');
+                setLoading(true);
+                const endTimeInSeconds = Math.floor(new Date(endTimestamp).getTime() / 1000);
+                const amountInUnits = parseUnits(amount, selected?.assetGroup.tokens[0].decimals);
+                await SpoolSDK.mutations.rewards.addOffChainReward('offchain_s', selectedAddress, tokenName, endTimeInSeconds, amountInUnits)
+            } catch (error) {
+                console.error('Error adding reward:', error);
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
     return (
         <Box display="flex" flexDirection="column" gap={2}>
+            <FormControl fullWidth>
+                <InputLabel id="vault-select-label">Select Vault</InputLabel>
+                <Select
+                    labelId="vault-select-label"
+                    value={selectedVault}
+                    onChange={(e) => setSelectedVault(e.target.value)}
+                    label="Select Vault"
+                >
+                    {ownedSmartVaults.map((smartVault) => (
+                        <MenuItem key={smartVault.smartVault.address} value={smartVault.smartVault.name}>
+                            {smartVault.smartVault.name}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
             <TextField
                 fullWidth
-                label="Token Address"
-                value={tokenAddress}
-                onChange={(e) => setTokenAddress(e.target.value)}
+                label="Token Name"
+                value={tokenName}
+                onChange={(e) => setTokenName(e.target.value)}
             />
             <TextField
                 fullWidth
@@ -67,7 +83,7 @@ const AddRewardInput: React.FC<AddRewardInputProps> = ({smarVaultAddress}) => {
                     <CircularProgress size={25}/>
                 </Button>
             ) : (
-                <Button variant="contained" fullWidth onClick={handleAddReward}>
+                <Button variant="contained" fullWidth disabled={!selectedVault || !tokenName || !amount || !endTimestamp} onClick={handleAddReward}>
                     Add Reward
                 </Button>
             )}
