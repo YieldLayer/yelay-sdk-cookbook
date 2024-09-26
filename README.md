@@ -10,4 +10,4 @@ The cookbook currently contains recipes for the following use cases:
 - Withdrawing,
 - More coming soon.
 
-For detailed information, setup instructions, and usage guidelines, please visit our [Wiki Page](https://github.com/solidant/spool-v2-sdk-cookbook/wiki).
+For detailed information, setup instructions, and usage guidelines, please visit our [Wiki Page](https://github.com/YieldLayer/yelay-sdk-cookbook/wiki/).
