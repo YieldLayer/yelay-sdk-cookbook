@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Box, Button, CircularProgress, TextField} from '@mui/material';
 import {RewardConfiguration} from "@spool.fi/spool-v2-sdk";
-import {useSpoolSDK} from "@/context/SpoolSDKContext";
+import {useYelaySDK} from "@/context/YelaySDKContext";
 
 interface ChangeRewardRateInputProps {
     rewardConfiguration: RewardConfiguration;
@@ -9,7 +9,7 @@ interface ChangeRewardRateInputProps {
 
 const ChangeRewardRateInput: React.FC<ChangeRewardRateInputProps> = ({ rewardConfiguration }) => {
 
-    const SpoolSDK = useSpoolSDK();
+    const yelaySDK = useYelaySDK();
 
     const [newRewardRate, setNewRewardRate] = useState('');
     const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ const ChangeRewardRateInput: React.FC<ChangeRewardRateInputProps> = ({ rewardCon
                     ...rewardConfiguration,
                     rewardRate: newRewardRate
                 };
-                const tx = await SpoolSDK.mutations.rewards.recalculateOffchainRewards('offchain_s', updatedRewardConf)
+                const tx = await yelaySDK.mutations.rewards.recalculateOffchainRewards('offchain_s', updatedRewardConf)
                 if (!tx.error){
                     console.log('Reward rate recalculated successfully');
                 }

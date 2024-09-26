@@ -1,8 +1,8 @@
-# Spool V2 SDK Cookbook 🍲
+# Yelay SDK Cookbook 🍲
 
 ## Introduction
 
-Welcome to the Spool V2 SDK Cookbook! This cookbook is a guide to using the Spool V2 SDK. It is a simple Next.js project that allows you to test out the most common use cases when interacting with the Spool V2 protocol.
+Welcome to the Yelay SDK Cookbook! This cookbook is a guide to using the Yelay SDK. It is a simple Next.js project that allows you to test out the most common use cases when interacting with the Yelay protocol.
 
 The cookbook currently contains recipes for the following use cases:
 

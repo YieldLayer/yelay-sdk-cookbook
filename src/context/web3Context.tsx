@@ -53,7 +53,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({children}) => {
 
     const checkAllowance = async (tokenAddress: string, owner: string): Promise<string> => {
         const contract = new Contract(tokenAddress, erc20ABI, provider?.getSigner())
-        const allowance = await contract.allowance(owner, process.env.NEXT_PUBLIC_SPOOL_SMART_VAULT_MANAGER_ADDRESS);
+        const allowance = await contract.allowance(owner, process.env.NEXT_PUBLIC_YELAY_SMART_VAULT_MANAGER_ADDRESS);
         return allowance.toString();
     };
 
@@ -63,7 +63,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({children}) => {
         }
         const signer = provider.getSigner();
         const erc20Instance = new ethers.Contract(tokenAddress, erc20ABI, signer);
-        const approveTx = await erc20Instance.approve(process.env.NEXT_PUBLIC_SPOOL_SMART_VAULT_MANAGER_ADDRESS, amount);
+        const approveTx = await erc20Instance.approve(process.env.NEXT_PUBLIC_YELAY_SMART_VAULT_MANAGER_ADDRESS, amount);
         return await approveTx.wait();
     };
 

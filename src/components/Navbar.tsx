@@ -22,7 +22,7 @@ const Navbar = () => {
             <AppBar position="fixed">
                 <Toolbar>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            Spool Template
+                            Yelay Template
                         </Typography>
                     <Box display='flex' gap={1}>
                         {navItems.map((item) => (

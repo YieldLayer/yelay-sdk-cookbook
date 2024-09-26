@@ -3,7 +3,7 @@
 import Box from "@mui/material/Box";
 import {useEffect, useState} from "react";
 import {useWeb3Provider} from "@/context/web3Context";
-import {useSpoolSDK} from "@/context/SpoolSDKContext";
+import {useYelaySDK} from "@/context/YelaySDKContext";
 import Typography from "@mui/material/Typography";
 import {Divider} from "@mui/material";
 import type {UserBalanceBreakdown} from "@spool.fi/spool-v2-sdk";
@@ -15,7 +15,7 @@ interface UserBalanceBreakdownProps {
 const UserBalanceBreakdown: React.FC<UserBalanceBreakdownProps> = ({smartVaultAddress}) => {
 
     const {account} = useWeb3Provider();
-    const SpoolSDK = useSpoolSDK();
+    const yelaySDK = useYelaySDK();
 
     const initialBalanceBreakdown: UserBalanceBreakdown = {
         pendingAssets: {"0": 0},
@@ -34,7 +34,7 @@ const UserBalanceBreakdown: React.FC<UserBalanceBreakdownProps> = ({smartVaultAd
     useEffect(() => {
         const fetchBalanceBreakdown = async () => {
             if (account) {
-                const balanceBreakdown = await SpoolSDK.getUserBalanceBreakdown({
+                const balanceBreakdown = await yelaySDK.getUserBalanceBreakdown({
                     vaultAddress: smartVaultAddress,
                     userAddress: account.toLowerCase()
                 });

@@ -3,19 +3,17 @@
 import {useEffect, useState} from 'react';
 import {Box, Button, CircularProgress} from '@mui/material';
 import {useWeb3Provider} from "@/context/web3Context";
-import {useSpoolSDK} from "@/context/SpoolSDKContext";
+import {useYelaySDK} from "@/context/YelaySDKContext";
 import Typography from "@mui/material/Typography";
-import {TokenInfo} from "@spool.fi/spool-v2-sdk";
 
 interface ClaimInputProps {
     smartVaultAddress: string;
-    token: TokenInfo;
 }
 
-const ClaimInput: React.FC<ClaimInputProps> = ({smartVaultAddress, token}) => {
+const ClaimInput: React.FC<ClaimInputProps> = ({smartVaultAddress}) => {
 
-    const {account, checkAllowance, approve} = useWeb3Provider();
-    const SpoolSDK = useSpoolSDK();
+    const {account} = useWeb3Provider();
+    const yelaySDK = useYelaySDK();
 
     const [loading, setLoading] = useState(false);
     const [hasClaimable, setHasClaimable] = useState<boolean>(false);
@@ -23,7 +21,7 @@ const ClaimInput: React.FC<ClaimInputProps> = ({smartVaultAddress, token}) => {
 
     useEffect(() => {
         const fetchClaimable = async () => {
-            const balanceBreakdown = await SpoolSDK.views.userInfo.getUserBalanceBreakdown({
+            const balanceBreakdown = await yelaySDK.views.userInfo.getUserBalanceBreakdown({
                 userAddress: account?.toLowerCase() || "0x0",
                 vaultAddress: smartVaultAddress
             })
@@ -40,15 +38,15 @@ const ClaimInput: React.FC<ClaimInputProps> = ({smartVaultAddress, token}) => {
             if (!account) {
                 throw new Error("No account")
             }
-            const balanceBreakdown = await SpoolSDK.views.userInfo.getUserBalanceBreakdown({
+            const balanceBreakdown = await yelaySDK.views.userInfo.getUserBalanceBreakdown({
                 userAddress: account.toLowerCase(),
                 vaultAddress: smartVaultAddress
             })
             const claimableWNFTs = balanceBreakdown.claimableWNFTs
-            const tx = await SpoolSDK.mutations.withdraw.claimWithdrawal(
+            const tx = await yelaySDK.mutations.withdraw.claimWithdrawal(
                 smartVaultAddress,
                 claimableWNFTs.map(wNFT => wNFT.nftId),
-                claimableWNFTs.map(input => 1000000),
+                claimableWNFTs.map(_ => 1000000),
                 account
             )
             await tx.wait()

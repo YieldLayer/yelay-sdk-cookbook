@@ -15,6 +15,7 @@ const contractAddresses = {
     IRewardManager: '0xcE7F66BD505a80129Ef25b06207Ac49620A55522',
     IStrategyRegistry: '0xf978853Db777d00b1130Ea21d8d98E8710b0Bc56',
     ISpoolLens: '0x33Df6cf08Fbb10047e318989fE687294CD45A7B4',
+    IMetaVaultFactory: '0xe07a896CFD8FEdFb6d7515480853c5D5ED30EBFE',
   },
 };
 
@@ -26,26 +27,26 @@ const config = new SDKConfig(
     contractAddresses,
 );
 
-const SpoolSDKContext = createContext<SpoolSdk | null>(null);
+const YelaySDKContext = createContext<SpoolSdk | null>(null);
 
-export const useSpoolSDK = () => {
-  const context = useContext(SpoolSDKContext);
+export const useYelaySDK = () => {
+  const context = useContext(YelaySDKContext);
   if (!context) {
-    throw new Error('useSpoolSDK must be used within a SpoolSDKProvider');
+    throw new Error('useYelaySDK must be used within a YelaySDKProvider');
   }
   return context;
 };
 
-type SpoolSDKProviderProps = {
+type YelaySDKProviderProps = {
   children: ReactNode;
 };
 
-export const SpoolSDKProvider = ({ children }: SpoolSDKProviderProps) => {
+export const YelaySDKProvider = ({ children }: YelaySDKProviderProps) => {
 
   const { account, provider } = useWeb3Provider();
   const tempProvider = new JsonRpcProvider(process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL || '');
 
-  const spoolSDK = useMemo(() => {
+  const yelaySDK = useMemo(() => {
     if (account && provider) {
       return new SpoolSdk(config, provider.getSigner());
     }
@@ -53,8 +54,8 @@ export const SpoolSDKProvider = ({ children }: SpoolSDKProviderProps) => {
   }, [provider, account]);
 
   return (
-    <SpoolSDKContext.Provider value={spoolSDK}>
+    <YelaySDKContext.Provider value={yelaySDK}>
       {children}
-    </SpoolSDKContext.Provider>
+    </YelaySDKContext.Provider>
   );
 };

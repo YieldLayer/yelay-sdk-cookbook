@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserVaults } from "@spool.fi/spool-v2-sdk";
 import { Box, Select, MenuItem, FormControl, InputLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { useSpoolSDK } from "@/context/SpoolSDKContext";
+import { useYelaySDK } from "@/context/YelaySDKContext";
 import {Check, Close} from "@mui/icons-material";
 import ChangeRewardRateInput from "@/components/ChangeRewardRateInput";
 
@@ -12,13 +12,13 @@ interface RewardConfigurationsProps {
 const RewardConfigurations: React.FC<RewardConfigurationsProps> = ({ ownedSmartVaults }) => {
     const [selectedVault, setSelectedVault] = useState<string>('');
     const [configurations, setConfigurations] = useState<any[]>([]);
-    const spoolSDK = useSpoolSDK();
+    const yelaySDK = useYelaySDK();
 
     useEffect(() => {
         const fetchConfigurations = async () => {
             if (selectedVault) {
                 try {
-                    const response = await spoolSDK.views.rewards.getAllRewardConfigs("offchain_s");
+                    const response = await yelaySDK.views.rewards.getAllRewardConfigs("offchain_s");
                     const filteredConfigurations = response.configurations.filter(config => config.vaultAddress === selectedVault);
                     setConfigurations(filteredConfigurations);
                 } catch (err) {
@@ -28,13 +28,14 @@ const RewardConfigurations: React.FC<RewardConfigurationsProps> = ({ ownedSmartV
         };
 
         fetchConfigurations();
-    }, [selectedVault, spoolSDK]);
+    }, [selectedVault, yelaySDK]);
 
     return (
         <Box>
             <FormControl fullWidth>
                 <InputLabel id="vault-select-label">Select Vault</InputLabel>
                 <Select
+                    variant='outlined'
                     labelId="vault-select-label"
                     value={selectedVault}
                     onChange={(e) => setSelectedVault(e.target.value)}

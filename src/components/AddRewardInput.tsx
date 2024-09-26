@@ -2,7 +2,7 @@
 
 import React, {useState} from 'react';
 import {TextField, Button, Grid, CircularProgress, FormControl, InputLabel, Select, MenuItem} from '@mui/material';
-import {useSpoolSDK} from "@/context/SpoolSDKContext";
+import {useYelaySDK} from "@/context/YelaySDKContext";
 import Box from "@mui/material/Box";
 import {UserVaults} from "@spool.fi/spool-v2-sdk";
 import {parseUnits} from "ethers/lib/utils";
@@ -13,7 +13,7 @@ interface AddRewardInputProps {
 
 const AddRewardInput: React.FC<AddRewardInputProps> = ({ownedSmartVaults}) => {
 
-    const SpoolSDK = useSpoolSDK();
+    const yelaySDK = useYelaySDK();
 
     const [tokenName, setTokenName] = useState<string>('');
     const [endTimestamp, setEndTimestamp] = useState<string>('');
@@ -30,7 +30,7 @@ const AddRewardInput: React.FC<AddRewardInputProps> = ({ownedSmartVaults}) => {
                 setLoading(true);
                 const endTimeInSeconds = Math.floor(new Date(endTimestamp).getTime() / 1000);
                 const amountInUnits = parseUnits(amount, selected?.assetGroup.tokens[0].decimals);
-                await SpoolSDK.mutations.rewards.addOffChainReward('offchain_s', selectedAddress, tokenName, endTimeInSeconds, amountInUnits)
+                await yelaySDK.mutations.rewards.addOffChainReward('offchain_s', selectedAddress, tokenName, endTimeInSeconds, amountInUnits)
             } catch (error) {
                 console.error('Error adding reward:', error);
             } finally {
@@ -44,6 +44,7 @@ const AddRewardInput: React.FC<AddRewardInputProps> = ({ownedSmartVaults}) => {
             <FormControl fullWidth>
                 <InputLabel id="vault-select-label">Select Vault</InputLabel>
                 <Select
+                    variant='outlined'
                     labelId="vault-select-label"
                     value={selectedVault}
                     onChange={(e) => setSelectedVault(e.target.value)}

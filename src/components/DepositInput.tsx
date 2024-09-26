@@ -3,7 +3,7 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {Box, Button, CircularProgress, TextField} from '@mui/material';
 import {useWeb3Provider} from "@/context/web3Context";
-import {useSpoolSDK} from "@/context/SpoolSDKContext";
+import {useYelaySDK} from "@/context/YelaySDKContext";
 import Typography from "@mui/material/Typography";
 import {BigNumber, ethers} from "ethers";
 import {parseUnits} from "ethers/lib/utils";
@@ -16,8 +16,8 @@ interface DepositInputProps {
 
 const DepositInput: React.FC<DepositInputProps> = ({smartVaultAddress, token}) => {
 
-    const {account, checkAllowance, approve} = useWeb3Provider();
-    const SpoolSDK = useSpoolSDK();
+    const {account, checkAllowance} = useWeb3Provider();
+    const yelaySDK = useYelaySDK();
 
     const [amount, setAmount] = useState('');
     const [allowance, setAllowance] = useState<string>('0');
@@ -66,7 +66,7 @@ const DepositInput: React.FC<DepositInputProps> = ({smartVaultAddress, token}) =
                 referral: ethers.constants.AddressZero,
                 doFlush: false,
             };
-            const tx = await SpoolSDK.mutations.swapAndDeposit.deposit(depositBag)
+            const tx = await yelaySDK.mutations.swapAndDeposit.deposit(depositBag)
             await tx.wait();
         }
         finally {

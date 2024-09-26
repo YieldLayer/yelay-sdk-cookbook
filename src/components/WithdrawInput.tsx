@@ -3,7 +3,7 @@
 import {useEffect, useState} from 'react';
 import {Box, Button, CircularProgress, Switch, TextField} from '@mui/material';
 import {useWeb3Provider} from "@/context/web3Context";
-import {useSpoolSDK} from "@/context/SpoolSDKContext";
+import {useYelaySDK} from "@/context/YelaySDKContext";
 import Typography from "@mui/material/Typography";
 import {parseUnits} from "ethers/lib/utils";
 import {TokenInfo} from "@spool.fi/spool-v2-sdk";
@@ -16,7 +16,7 @@ interface WithdrawInputProps {
 const WithdrawInput: React.FC<WithdrawInputProps> = ({smartVaultAddress, token}) => {
 
     const {account, latestBlock} = useWeb3Provider();
-    const SpoolSDK = useSpoolSDK();
+    const yelaySDK = useYelaySDK();
 
     const [amount, setAmount] = useState('');
     const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ const WithdrawInput: React.FC<WithdrawInputProps> = ({smartVaultAddress, token})
 
     useEffect(() => {
         const fetchWithdrawable = async () => {
-            const balanceBreakdown = await SpoolSDK.views.userInfo.getUserBalanceBreakdown({
+            const balanceBreakdown = await yelaySDK.views.userInfo.getUserBalanceBreakdown({
                 userAddress: account?.toLowerCase() || "0x0",
                 vaultAddress: smartVaultAddress
             })
@@ -43,17 +43,17 @@ const WithdrawInput: React.FC<WithdrawInputProps> = ({smartVaultAddress, token})
             if (!account) {
                 throw new Error("No account")
             }
-            const redeemBag = await SpoolSDK.views.userInfo.getMinimumBurnRedeemBag({
+            const redeemBag = await yelaySDK.views.userInfo.getMinimumBurnRedeemBag({
                 userAddress: account.toLowerCase(),
                 vaultAddress: smartVaultAddress,
                 assetsToWithdraw: [+amount]
             })
             if(fastWithdraw){
-                const tx = await SpoolSDK.mutations.withdraw.redeemFast(redeemBag, account, await latestBlock())
+                const tx = await yelaySDK.mutations.withdraw.redeemFast(redeemBag, account, await latestBlock())
                 await tx.wait()
             }
             else {
-                const tx = await SpoolSDK.mutations.withdraw.redeem(redeemBag, account, false)
+                const tx = await yelaySDK.mutations.withdraw.redeem(redeemBag, account, false)
                 await tx.wait()
             }
         }
@@ -72,16 +72,16 @@ const WithdrawInput: React.FC<WithdrawInputProps> = ({smartVaultAddress, token})
             if (!account) {
                 throw new Error("No account")
             }
-            const redeemBag = await SpoolSDK.views.userInfo.getMaxRedeemBag({
+            const redeemBag = await yelaySDK.views.userInfo.getMaxRedeemBag({
                 userAddress: account.toLowerCase(),
                 vaultAddress: smartVaultAddress
             })
             if(fastWithdraw){
-                const tx = await SpoolSDK.mutations.withdraw.redeemFast(redeemBag, account, await latestBlock())
+                const tx = await yelaySDK.mutations.withdraw.redeemFast(redeemBag, account, await latestBlock())
                 await tx.wait()
             }
             else {
-                const tx = await SpoolSDK.mutations.withdraw.redeem(redeemBag, account, false)
+                const tx = await yelaySDK.mutations.withdraw.redeem(redeemBag, account, false)
                 await tx.wait()
             }
         }

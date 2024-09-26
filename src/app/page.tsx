@@ -3,7 +3,7 @@
 import Container from '@mui/material/Container';
 import SmartVaultCard from "@/components/SmartVaultCard";
 import {Grid} from "@mui/material";
-import {useSpoolSDK} from "@/context/SpoolSDKContext";
+import {useYelaySDK} from "@/context/YelaySDKContext";
 import {useEffect, useState} from "react";
 import {VaultInfo} from "@spool.fi/spool-v2-sdk";
 import Error from "@/components/Error";
@@ -11,7 +11,7 @@ import Loading from "@/components/Loading";
 
 const Home = () => {
 
-    const spoolSDK = useSpoolSDK();
+    const yelaySDK = useYelaySDK();
 
     const [smartVaults, setSmartVaults] = useState<VaultInfo[]>([]);
     const [loading, setLoading] = useState(true);
@@ -21,7 +21,7 @@ const Home = () => {
         const fetchSmartVaults = async () => {
             try {
                 setLoading(true);
-                const response = await spoolSDK.views.general.listVaults({limit: 10, offset: 0});
+                const response = await yelaySDK.views.general.listVaults({limit: 10, offset: 0});
                 setSmartVaults(response);
             } catch (err) {
                 setError(err as Error);
@@ -31,7 +31,7 @@ const Home = () => {
         };
 
         fetchSmartVaults();
-    }, [spoolSDK]);
+    }, [yelaySDK]);
 
     if (loading) {
         return <Loading/>

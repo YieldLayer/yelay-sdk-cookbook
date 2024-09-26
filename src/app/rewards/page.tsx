@@ -2,9 +2,9 @@
 
 import Container from '@mui/material/Container';
 import {Box, Grid} from "@mui/material";
-import {useSpoolSDK} from "@/context/SpoolSDKContext";
+import {useYelaySDK} from "@/context/YelaySDKContext";
 import {useEffect, useState} from "react";
-import {UserVaults, VaultInfo} from "@spool.fi/spool-v2-sdk";
+import {UserVaults} from "@spool.fi/spool-v2-sdk";
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
 import {useWeb3Provider} from "@/context/web3Context";
@@ -16,7 +16,7 @@ import RewardConfigurations from "@/components/RewardConfigurations";
 
 const RewardsPage = () => {
 
-    const spoolSDK = useSpoolSDK();
+    const yelaySDK = useYelaySDK();
     const {account} = useWeb3Provider();
 
     const [ownedSmartVaults, setOwnedSmartVaults] = useState<UserVaults[]>([]);
@@ -28,7 +28,7 @@ const RewardsPage = () => {
             if (account) {
                 try {
                     setLoading(true);
-                    const response = await spoolSDK.views.userInfo.getUserVaults({userAddresses: [account]});
+                    const response = await yelaySDK.views.userInfo.getUserVaults({userAddresses: [account]});
                     setOwnedSmartVaults(response[account].filter(vault => vault.smartVault.owner === account));
                 } catch (err) {
                     setError(err as Error);
@@ -39,7 +39,7 @@ const RewardsPage = () => {
         };
 
         fetchOwnedSmartVaults();
-    }, [spoolSDK, account]);
+    }, [yelaySDK, account]);
 
     if (loading) {
         return <Loading/>

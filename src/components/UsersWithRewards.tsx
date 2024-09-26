@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import {UserVaults} from "@spool.fi/spool-v2-sdk";
 import {useEffect, useState} from "react";
-import {useSpoolSDK} from "@/context/SpoolSDKContext";
+import {useYelaySDK} from "@/context/YelaySDKContext";
 
 interface UsersWithRewardsProps {
     ownedSmartVaults: UserVaults[];
@@ -21,13 +21,13 @@ interface UsersWithRewardsProps {
 const UsersWithRewards:React.FC<UsersWithRewardsProps> = ({ownedSmartVaults}) => {
     const [selectedVault, setSelectedVault] = useState<string>('');
     const [rewards, setRewards] = useState<any[]>([]);
-    const spoolSDK = useSpoolSDK();
+    const yelaySDK = useYelaySDK();
 
     useEffect(() => {
         const fetchRewards = async () => {
             if (selectedVault) {
                 try {
-                    const response = await spoolSDK.views.rewards.getOffChainRewards('offchain_s');
+                    const response = await yelaySDK.views.rewards.getOffChainRewards('offchain_s');
                     const filteredRewards = response.rewards.filter(reward => reward.vaultAddress === selectedVault);
                     setRewards(filteredRewards);
                 } catch (err) {
@@ -37,13 +37,14 @@ const UsersWithRewards:React.FC<UsersWithRewardsProps> = ({ownedSmartVaults}) =>
         };
 
         fetchRewards();
-    }, [selectedVault, spoolSDK]);
+    }, [selectedVault, yelaySDK]);
 
     return (
         <Box>
             <FormControl fullWidth>
                 <InputLabel id="vault-select-label">Select Vault</InputLabel>
                 <Select
+                    variant='outlined'
                     labelId="vault-select-label"
                     value={selectedVault}
                     onChange={(e) => setSelectedVault(e.target.value)}

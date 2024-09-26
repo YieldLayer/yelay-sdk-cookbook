@@ -1,7 +1,7 @@
 "use client";
 
 import {useEffect, useState} from "react";
-import {useSpoolSDK} from "@/context/SpoolSDKContext";
+import {useYelaySDK} from "@/context/YelaySDKContext";
 import {VaultInfo} from "@spool.fi/spool-v2-sdk";
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
@@ -15,11 +15,10 @@ import ApproveInput from "@/components/ApproveInput";
 import WithdrawInput from "@/components/WithdrawInput";
 import UserBalanceBreakdown from "@/components/UserBalanceBreakdown";
 import ClaimInput from "@/components/ClaimInput";
-import AddRewardInput from "@/components/AddRewardInput";
 
 const SmartVaultDetailPage = ({params}: { params: { address: string } }) => {
 
-    const spoolSDK = useSpoolSDK()
+    const yelaySDK = useYelaySDK()
 
     const [smartVault, setSmartVault] = useState<VaultInfo | null>(null);
     const [smartVaultTVR, setSmartVaultTVR] = useState<string>('0');
@@ -31,8 +30,8 @@ const SmartVaultDetailPage = ({params}: { params: { address: string } }) => {
             try {
                 setLoading(true);
                 const [vaultDetails, vaultTVR] = await Promise.all([
-                    spoolSDK.views.vaultInfo.getVaultDetails({vaultAddress: params.address}),
-                    spoolSDK.views.vaultInfo.getVaultsTVRInUSD({vaultAddresses: params.address})
+                    yelaySDK.views.vaultInfo.getVaultDetails({vaultAddress: params.address}),
+                    yelaySDK.views.vaultInfo.getVaultsTVRInUSD({vaultAddresses: params.address})
                 ]);
                 setSmartVault(vaultDetails);
                 setSmartVaultTVR(vaultTVR[params.address].toFixed(2));
@@ -44,7 +43,7 @@ const SmartVaultDetailPage = ({params}: { params: { address: string } }) => {
         };
 
         fetchSmartVaultDetails();
-    }, [spoolSDK, params.address]);
+    }, [yelaySDK, params.address]);
 
     if (loading || !smartVault) {
         return <Loading/>
@@ -111,7 +110,7 @@ const SmartVaultDetailPage = ({params}: { params: { address: string } }) => {
                 <Grid item xs={12} md={6}>
                     <Box display='flex' flexDirection='column' flexGrow={1} gap={2} sx={{boxShadow: 1, p: 2}}>
                         <Typography variant='h4'>Claim</Typography>
-                        <ClaimInput smartVaultAddress={params.address} token={smartVault.assetGroup.tokens[0]}/>
+                        <ClaimInput smartVaultAddress={params.address}/>
                     </Box>
                 </Grid>
             </Grid>
